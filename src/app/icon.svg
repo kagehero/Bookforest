@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="12" fill="#13201a"/>
+  <!-- lantern glow -->
+  <circle cx="32" cy="30" r="16" fill="#ffcf8a" opacity="0.18"/>
+  <!-- three book spines -->
+  <rect x="18" y="20" width="8" height="26" rx="1.5" fill="#2f4a36" stroke="#c9a24b" stroke-width="1"/>
+  <rect x="28" y="16" width="8" height="30" rx="1.5" fill="#7a5638" stroke="#e08a3c" stroke-width="1"/>
+  <rect x="38" y="22" width="8" height="24" rx="1.5" fill="#1d3327" stroke="#7c9b7e" stroke-width="1"/>
+  <!-- shelf plank -->
+  <rect x="14" y="46" width="36" height="4" rx="1" fill="#5a3f28"/>
+</svg>
