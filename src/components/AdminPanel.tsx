@@ -92,7 +92,7 @@ export function AdminPanel({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="mt-auto max-h-[88%] overflow-y-auto rounded-t-3xl border-t border-wood-warm/30 bg-forest-deepest px-5 pb-10 pt-5"
+            className="no-scrollbar mt-auto max-h-[88%] overflow-y-auto rounded-t-3xl border-t border-wood-warm/30 bg-forest-deepest px-5 pb-10 pt-5"
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-sage/40" />
             <div className="mb-4 flex items-center justify-between">

@@ -18,12 +18,20 @@ interface BookSpineProps {
 
 // Map physical mm to on-screen px within a pleasing range for mobile shelves.
 function spineWidth(thicknessMm: number, scale: number): number {
-  // 14mm → ~26px, 24mm → ~46px (before scaling)
-  return Math.round((18 + (thicknessMm - 14) * 2) * scale);
+  // Keep thickness proportional but clamp to a believable, legible band so no
+  // spine is a sliver or a slab. 13mm → ~22px, 24mm → ~42px (before scaling).
+  const raw = 16 + (thicknessMm - 13) * 1.9;
+  return Math.round(clamp(raw, 18, 44) * scale);
 }
 function spineHeight(heightMm: number, scale: number): number {
-  // 176mm → ~208px, 193mm → ~244px (before scaling)
-  return Math.round((150 + (heightMm - 176) * 2.1) * scale);
+  // Real shelved books are roughly the same height with gentle variation — the
+  // earlier 2.1×/mm made tops jagged. Compress the spread so the row tops form a
+  // tidy, believable line: 174mm → ~196px, 193mm → ~214px (before scaling),
+  // i.e. ≈18px of variation instead of ≈40px.
+  return Math.round((196 + (heightMm - 174) * 0.95) * scale);
+}
+function clamp(v: number, lo: number, hi: number): number {
+  return Math.max(lo, Math.min(hi, v));
 }
 
 /**
@@ -56,7 +64,7 @@ export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps)
           "0 14px 26px -6px rgba(0,0,0,0.6), 0 0 18px rgba(255,207,138,0.45)",
       }}
       whileTap={{ y: -6, scale: 0.985 }}
-      className="relative flex shrink-0 select-none items-end overflow-hidden rounded-[3px] shadow-spine outline-none focus-visible:ring-2 focus-visible:ring-lantern-glow"
+      className="relative flex shrink-0 select-none items-center justify-center overflow-hidden rounded-[3px] shadow-spine outline-none focus-visible:ring-2 focus-visible:ring-lantern-glow"
       style={{
         width: w,
         height: h,
@@ -96,27 +104,30 @@ export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps)
         }}
       />
 
-      {/* Vertical title + author */}
+      {/* Vertical title + author, optically centered on the visible spine
+          face. The 3px page-block edge lives on the right, so we nudge the
+          lettering left by half of it to sit dead-center on what's seen. */}
       <span
-        className="vertical-text mx-auto flex max-h-full items-start gap-1.5 px-[2px] font-display"
+        className="vertical-text flex max-h-full items-center justify-center gap-1.5 px-[2px] font-display"
         style={{
           color: book.spine.textColor,
-          marginTop: compact ? 14 : 28,
-          marginBottom: compact ? 12 : 24,
+          marginRight: 3,
+          paddingTop: compact ? 12 : 24,
+          paddingBottom: compact ? 12 : 24,
         }}
       >
         <span
-          className="font-semibold leading-tight"
+          className="text-center font-semibold leading-tight"
           style={{
             fontSize: titleSize,
-            maxHeight: h - (compact ? 34 : 64),
+            maxHeight: h - (compact ? 28 : 56),
             overflow: "hidden",
           }}
         >
           {book.title}
         </span>
         {!compact && (
-          <span className="self-end pb-1 text-[10px] opacity-75">
+          <span className="self-center text-[10px] opacity-75">
             {book.author}
           </span>
         )}

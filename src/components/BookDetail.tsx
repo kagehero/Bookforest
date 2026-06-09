@@ -70,7 +70,7 @@ export function BookDetail({
             }}
           />
 
-          <div className="relative z-10 flex h-full flex-col overflow-y-auto">
+          <div className="no-scrollbar relative z-10 flex h-full flex-col overflow-y-auto">
             {/* ── Cover stage ───────────────────────────────────────────── */}
             <div
               onClick={onClose}

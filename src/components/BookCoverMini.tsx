@@ -24,25 +24,38 @@ export function BookCoverMini({ book, onSelect, width = 64 }: BookCoverMiniProps
       type="button"
       aria-label={`${book.title} — ${book.author}`}
       onClick={() => onSelect(book)}
-      /* Leaned back on the platform (面陳列): tilted away at rest, standing up
-         when touched, with a soft cast shadow at its foot. */
-      initial={{ rotateX: 18 }}
-      animate={{ rotateX: 18 }}
-      whileHover={{ y: -8, rotateX: 4 }}
+      /* Leaned back on the platform (面陳列): the cover stands on its bottom
+         edge and tips back against the shelf, standing up a little when touched.
+         The bottom edge is the pivot, so it genuinely rests on the plank. */
+      initial={{ rotateX: 15 }}
+      animate={{ rotateX: 15 }}
+      whileHover={{ y: -6, rotateX: 4 }}
       whileTap={{ scale: 0.97, rotateX: 4 }}
       transition={{ type: "spring", stiffness: 260, damping: 22 }}
       className="relative shrink-0 select-none rounded-[2px] outline-none focus-visible:ring-2 focus-visible:ring-lantern-glow"
       style={{ width, height, transformStyle: "preserve-3d", transformOrigin: "bottom center" }}
     >
-      {/* cast shadow pooled at the foot of the leaning cover */}
+      {/* Grounding shadows. A tight, dark *contact* shadow right where the cover
+         meets the wood sells the touch; a softer, wider shadow behind it falls
+         the way the lean + overhead light would cast it. */}
       <span
         aria-hidden
-        className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full"
+        className="absolute -bottom-[2px] left-1/2 -translate-x-1/2 rounded-[50%]"
         style={{
-          width: width * 0.9,
-          height: 6,
-          background: "rgba(0,0,0,0.45)",
-          filter: "blur(3px)",
+          width: width * 0.78,
+          height: 4,
+          background: "rgba(0,0,0,0.6)",
+          filter: "blur(1.5px)",
+        }}
+      />
+      <span
+        aria-hidden
+        className="absolute -bottom-[1px] left-1/2 -translate-x-1/2 rounded-[50%]"
+        style={{
+          width: width * 1.05,
+          height: 9,
+          background: "rgba(0,0,0,0.32)",
+          filter: "blur(5px)",
         }}
       />
       <div

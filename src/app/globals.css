@@ -13,6 +13,18 @@ body {
   height: 100%;
 }
 
+/* Never show a scrollbar anywhere — content stays scrollable, the bar is just
+   hidden, matching the chrome-free phone aesthetic. */
+html,
+body,
+* {
+  -ms-overflow-style: none; /* IE / old Edge */
+  scrollbar-width: none; /* Firefox */
+}
+::-webkit-scrollbar {
+  display: none; /* WebKit / Blink */
+}
+
 body {
   background: #0c1410;
   color: #ede3cf;
