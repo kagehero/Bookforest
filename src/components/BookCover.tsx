@@ -37,6 +37,16 @@ export function BookCover({ book, width = 200, className = "" }: BookCoverProps)
         className="relative h-full w-full overflow-hidden rounded-l-[3px] rounded-r-md shadow-book"
         style={{ background: book.cover.background, color: book.cover.textColor }}
       >
+        {/* owner-supplied cover artwork, cover-fit over the face */}
+        {book.coverImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={book.coverImage}
+            alt={`${book.title} の表紙`}
+            className="absolute inset-0 h-full w-full object-cover"
+            draggable={false}
+          />
+        )}
         {/* spine sliver on the left */}
         <div
           className="absolute inset-y-0 left-0 w-3"
@@ -50,12 +60,15 @@ export function BookCover({ book, width = 200, className = "" }: BookCoverProps)
               "linear-gradient(115deg, rgba(255,255,255,0.22) 0%, transparent 32%, transparent 100%)",
           }}
         />
-        {/* decorative frame */}
-        <div
-          className="absolute inset-3 rounded-sm border"
-          style={{ borderColor: "currentColor", opacity: 0.3 }}
-        />
+        {/* decorative frame — only over the CSS-rendered artwork */}
+        {!book.coverImage && (
+          <div
+            className="absolute inset-3 rounded-sm border"
+            style={{ borderColor: "currentColor", opacity: 0.3 }}
+          />
+        )}
 
+        {!book.coverImage && (
         <div className="relative flex h-full flex-col items-center justify-between px-5 py-7 text-center">
           <span className="text-[10px] tracking-[0.35em] opacity-70">
             HON NO MORI
@@ -76,6 +89,7 @@ export function BookCover({ book, width = 200, className = "" }: BookCoverProps)
             <p className="text-xs tracking-widest opacity-85">{book.author}</p>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
