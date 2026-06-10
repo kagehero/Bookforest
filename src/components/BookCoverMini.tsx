@@ -67,6 +67,17 @@ export function BookCoverMini({ book, onSelect, width = 64 }: BookCoverMiniProps
             "0 8px 14px -4px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06)",
         }}
       >
+        {/* owner-supplied cover artwork, cover-fit over the face */}
+        {book.coverImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={book.coverImage}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+            draggable={false}
+          />
+        )}
         {/* sheen */}
         <div
           aria-hidden
@@ -76,18 +87,22 @@ export function BookCoverMini({ book, onSelect, width = 64 }: BookCoverMiniProps
               "linear-gradient(120deg, rgba(255,255,255,0.22) 0%, transparent 36%)",
           }}
         />
-        <div
-          className="absolute inset-[3px] rounded-[1px] border"
-          style={{ borderColor: "currentColor", opacity: 0.25 }}
-        />
-        <div className="flex h-full flex-col items-center justify-center px-1.5 text-center">
-          <span
-            className="vertical-text font-display font-semibold leading-tight"
-            style={{ fontSize: width >= 70 ? 11 : 9.5, maxHeight: height - 14, overflow: "hidden" }}
-          >
-            {book.title}
-          </span>
-        </div>
+        {!book.coverImage && (
+          <div
+            className="absolute inset-[3px] rounded-[1px] border"
+            style={{ borderColor: "currentColor", opacity: 0.25 }}
+          />
+        )}
+        {!book.coverImage && (
+          <div className="flex h-full flex-col items-center justify-center px-1.5 text-center">
+            <span
+              className="vertical-text font-display font-semibold leading-tight"
+              style={{ fontSize: width >= 70 ? 11 : 9.5, maxHeight: height - 14, overflow: "hidden" }}
+            >
+              {book.title}
+            </span>
+          </div>
+        )}
       </div>
     </motion.button>
   );

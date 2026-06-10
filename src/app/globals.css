@@ -85,6 +85,26 @@ body {
   .admin-primary {
     @apply mt-2 w-full rounded-xl bg-gradient-to-b from-lantern-amber to-wood-warm py-3 font-serif text-sm font-semibold tracking-wider text-forest-deepest;
   }
+
+  /* ---- Light "store owner" dashboard theme (warm paper, dark brown ink) ---- */
+  .dash-field {
+    @apply w-full rounded-xl border border-[#e0d3b8] bg-white/70 px-4 py-3 text-[15px] text-[#3a2c1c] outline-none transition-colors placeholder:text-[#b3a489] focus:border-[#c98a3c] focus:bg-white focus:ring-2 focus:ring-[#e7c79a];
+  }
+  .dash-label {
+    @apply mb-1.5 block text-[13px] font-semibold tracking-wide text-[#7a5e3c];
+  }
+  .dash-card {
+    @apply rounded-2xl border border-[#e6dcc6] bg-[#fbf6ec] shadow-[0_8px_24px_-12px_rgba(90,63,40,0.25)];
+  }
+  .dash-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-[#c98a3c] to-[#a86f2c] px-6 py-3 text-[15px] font-bold tracking-wide text-white shadow-[0_6px_16px_-6px_rgba(168,111,44,0.7)] transition-transform active:scale-[0.98] disabled:opacity-40;
+  }
+  .dash-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[#d8c9a8] bg-white/60 px-5 py-3 text-[15px] font-semibold tracking-wide text-[#6a523a] transition-colors hover:bg-white active:scale-[0.98];
+  }
+  .dash-btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[#d9b3a3] bg-white/60 px-5 py-3 text-[15px] font-semibold tracking-wide text-[#a14b32] transition-colors hover:bg-[#fbeee9] active:scale-[0.98];
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -7,6 +7,7 @@ import {
   type NewBookInput,
   type NewShelfInput,
 } from "@/lib/repository";
+import { onCatalogueChange } from "@/lib/adminStorage";
 
 /**
  * Single source of truth for shelves + books on the client. Wraps the
@@ -35,10 +36,15 @@ export function useBookstore() {
       setBooks(b);
       setLoading(false);
     })();
+    // Live-update when the admin edits the catalogue (same tab or another tab).
+    const unsubscribe = onCatalogueChange(() => {
+      if (active) void refresh();
+    });
     return () => {
       active = false;
+      unsubscribe();
     };
-  }, [repo]);
+  }, [repo, refresh]);
 
   const booksById = useMemo(
     () => new Map(books.map((b) => [b.id, b])),

@@ -42,3 +42,21 @@ export interface NewShelfInput {
   subtitle?: string;
   category: Book["category"];
 }
+
+/**
+ * The richer admin contract. The dashboard persists whole `Book` / `Shelf`
+ * records (it edits every field), so it talks to the repository through these
+ * methods rather than the lightweight `add*`/`create*` helpers above.
+ */
+export interface AdminBookRepository extends BookRepository {
+  /** Insert or replace a book by id, returning the saved record. */
+  upsertBook(book: Book): Promise<Book>;
+  /** Remove a book and detach it from every shelf. */
+  deleteBook(bookId: string): Promise<void>;
+  /** Insert or replace a shelf by id, returning the saved record. */
+  upsertShelf(shelf: Shelf): Promise<Shelf>;
+  /** Remove a shelf (books are kept; only the grouping is removed). */
+  deleteShelf(shelfId: string): Promise<void>;
+  /** Reset storage to the curated demo catalogue. */
+  resetDemoData(): Promise<void>;
+}

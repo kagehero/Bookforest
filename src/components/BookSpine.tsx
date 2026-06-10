@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { Book } from "@/types/book";
+import { DISPLAY_SIZE_SCALE } from "@/types/book";
 
 interface BookSpineProps {
   book: Book;
@@ -40,10 +41,15 @@ function clamp(v: number, lo: number, hi: number): number {
  * printed band, and the vertically-set title + author.
  */
 export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps) {
-  const w = spineWidth(book.dimensions.thicknessMm, scale);
-  const h = spineHeight(book.dimensions.heightMm, scale);
-  const compact = scale < 0.85;
+  // Display size nudges the spine larger/smaller so the owner's "prominence"
+  // choice is visible on the shelf without breaking the packed row layout.
+  const sizeScale = DISPLAY_SIZE_SCALE[book.displaySize ?? "medium"];
+  const effScale = scale * sizeScale;
+  const w = spineWidth(book.dimensions.thicknessMm, effScale);
+  const h = spineHeight(book.dimensions.heightMm, effScale);
+  const compact = effScale < 0.85;
   const titleSize = compact ? (w >= 26 ? 11 : 9.5) : w >= 38 ? 15 : 13;
+  const hasImage = Boolean(book.spineImage);
 
   return (
     <motion.button
@@ -71,6 +77,17 @@ export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps)
         background: `linear-gradient(95deg, ${book.spine.color} 0%, ${book.spine.color} 62%, ${book.spine.accent} 100%)`,
       }}
     >
+      {/* Owner-supplied spine artwork, cover-fit over the body. */}
+      {hasImage && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={book.spineImage}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+          draggable={false}
+        />
+      )}
       {/* page block hint on the right edge */}
       <span
         className="absolute right-0 top-0 h-full w-[3px]"
@@ -81,7 +98,7 @@ export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps)
         }}
       />
       {/* head/tail bands */}
-      {book.spine.band && (
+      {!hasImage && book.spine.band && (
         <>
           <span
             className="absolute left-0 right-[3px] h-[2px]"
@@ -106,7 +123,9 @@ export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps)
 
       {/* Vertical title + author, optically centered on the visible spine
           face. The 3px page-block edge lives on the right, so we nudge the
-          lettering left by half of it to sit dead-center on what's seen. */}
+          lettering left by half of it to sit dead-center on what's seen.
+          Suppressed when owner artwork already carries the lettering. */}
+      {!hasImage && (
       <span
         className="vertical-text flex max-h-full items-center justify-center gap-1.5 px-[2px] font-display"
         style={{
@@ -132,6 +151,7 @@ export function BookSpine({ book, onSelect, hidden, scale = 1 }: BookSpineProps)
           </span>
         )}
       </span>
+      )}
     </motion.button>
   );
 }
